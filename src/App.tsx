@@ -26,27 +26,23 @@ function RegisterForm({ onSwitch }: { onSwitch: () => void }) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "300px" }}>
-      <h2>Register</h2>
-      <input type="text" placeholder="Name" value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
+  <div className="container">
+    <h2>Create Account</h2>
+    <div className="form-group">
+      <input type="text" placeholder="Full name" value={name}
+        onChange={(e) => setName(e.target.value)} />
       <input type="email" placeholder="Email" value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
+        onChange={(e) => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
-      <button onClick={handleSubmit}
-        style={{ padding: "8px", background: "green", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-        Register
-      </button>
-      <p>{message}</p>
-      <p style={{ fontSize: "13px" }}>
-        Already have an account?{" "}
-        <span onClick={onSwitch} style={{ color: "blue", cursor: "pointer" }}>Login</span>
-      </p>
+        onChange={(e) => setPassword(e.target.value)} />
+      <button className="btn btn-primary" onClick={handleSubmit}>Register</button>
     </div>
+    <p className="message">{message}</p>
+    <p className="switch-text">
+      Already have an account?{" "}
+      <span onClick={onSwitch}>Login</span>
+    </p>
+  </div>
   )
 }
 
@@ -77,33 +73,27 @@ function LoginForm({ onSwitch }: { onSwitch: () => void }) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "300px" }}>
-      <h2>Login</h2>
+  <div className="container">
+    <h2>Welcome back</h2>
+    <div className="form-group">
       <input type="email" placeholder="Email" value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
+        onChange={(e) => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }} />
-      <button onClick={handleSubmit}
-        style={{ padding: "8px", background: "blue", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-        Login
-      </button>
-      <button
-        style={{ padding: "8px", background: "#24292e", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", marginTop: "4px" }}
-        onClick={() => window.location.href = "http://localhost:8000/auth/github"}
-      >
+        onChange={(e) => setPassword(e.target.value)} />
+      <button className="btn btn-primary" onClick={handleSubmit}>Login</button>
+      <button className="btn btn-github"
+        onClick={() => window.location.href = "http://localhost:8000/auth/github"}>
         Login with GitHub
       </button>
-      <p>{message}</p>
-      <p style={{ fontSize: "13px" }}>
-        No account?{" "}
-        <span onClick={onSwitch} style={{ color: "blue", cursor: "pointer" }}>Register</span>
-      </p>
     </div>
-  )
+    <p className="message">{message}</p>
+    <p className="switch-text">
+      No account?{" "}
+      <span onClick={onSwitch}>Register</span>
+    </p>
+  </div>
+   )
 }
-
 function Dashboard() {
   const { token, setToken } = useAuth()
   const [user, setUser] = useState<{ name: string; email: string } | null>(null)
@@ -130,15 +120,15 @@ function Dashboard() {
   if (!user) return <p>Loading...</p>
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Dashboard</h2>
-      <p>Welcome back, <strong>{user.name}</strong></p>
-      <p>Email: {user.email}</p>
-      <button onClick={handleLogout}
-        style={{ marginTop: "20px", padding: "8px 16px", background: "red", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-        Logout
-      </button>
-    </div>
+  <div className="dashboard">
+    <h2>Dashboard</h2>
+    <p>Welcome back, <strong>{user.name}</strong></p>
+    <p>Email: {user.email}</p>
+    <button className="btn btn-danger" onClick={handleLogout}
+      style={{ marginTop: "20px" }}>
+      Logout
+    </button>
+  </div>
   )
 }
 
@@ -158,14 +148,13 @@ function App() {
   if (token) return <Dashboard />
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Auth Project</h1>
-      {showRegister
-        ? <RegisterForm onSwitch={() => setShowRegister(false)} />
-        : <LoginForm onSwitch={() => setShowRegister(true)} />
-      }
-    </div>
-  )
+  <div style={{ padding: "20px" }}>
+    {showRegister
+      ? <RegisterForm onSwitch={() => setShowRegister(false)} />
+      : <LoginForm onSwitch={() => setShowRegister(true)} />
+    }
+  </div>
+)
 }
 
 export default App
